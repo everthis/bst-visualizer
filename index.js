@@ -8,6 +8,7 @@ class BinaryTree {
     this.node = canvas
     this.data = data
     this.ctx = canvas.getContext("2d")
+    this.ctx.scale(dpr, dpr)
     this.line = new Line()
     this.root = null
   }
@@ -16,22 +17,21 @@ class BinaryTree {
     if (this.root) {
       this.recursiveAddNode(this.root, null, null, val)
     } else {
-      this.root = this.addAndDisplayNode(400, 40, 30, this.ctx, val)
+      this.root = this.addAndDisplayNode(300, 30, 20, this.ctx, val)
     }
   }
 
   recursiveAddNode(node, prevNode, coordinateCallback, data) {
     if (!node) {
       const xy = coordinateCallback && coordinateCallback()
-      const newNode = this.addAndDisplayNode(xy.cx, xy.cy, 30, this.ctx, data)
-      this.line.draw(
-        prevNode.getX(),
-        prevNode.getY(),
-        xy.cx,
-        xy.cy,
-        prevNode.getRadius(),
-        this.ctx
-      )
+      const newNode = this.addAndDisplayNode(xy.cx, xy.cy, 20, this.ctx, data)
+      const prevX = prevNode.getX()
+      const prevY = prevNode.getY()
+      this.line.draw(prevX, prevY, xy.cx, xy.cy, prevNode.getRadius(), this.ctx)
+      const avgX = (prevX + xy.cx) / 2
+      const avgY = (prevY + xy.cy) / 2
+      const dir = xy.cx - prevX > 0 ? "right" : "left"
+      this.ctx.fillText(dir === "right" ? 1 : 0, avgX - 3, avgY - 3)
       return newNode
     } else {
       if (data <= node.getData()) {
@@ -72,12 +72,12 @@ class Node {
     ctx.fillStyle = "blue"
     ctx.strokeStyle = "black"
     ctx.lineWidth = 2
-    ctx.font = "24px verdana"
+    ctx.font = "16px verdana"
   }
   draw() {
     const di = this.ctx.measureText(this.val)
     const xb = di.width / 2
-    const yb = 8
+    const yb = 6
     this.ctx.beginPath()
     this.ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI)
     this.ctx.stroke()
