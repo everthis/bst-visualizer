@@ -79,8 +79,8 @@ class BinaryTree {
     this.line.draw(prevX, prevY, xy.cx, xy.cy, p.getRadius(), this.ctx)
     const [avgX, avgY] = [(prevX + xy.cx) / 2, (prevY + xy.cy) / 2]
     const text = xy.cx - prevX > 0 ? 1 : 0
-    const halfW = this.ctx.measureText(text).width
-    this.ctx.fillText(text, avgX - halfW, avgY - 2)
+    const halfW = this.ctx.measureText(text).width / 2
+    this.ctx.fillText(text, text === 1 ? avgX + halfW : avgX - halfW * 2, avgY)
     this.m.set(node, newNode)
   }
   addAndDisplayNode(x, y, r, ctx, data) {
