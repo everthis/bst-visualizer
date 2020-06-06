@@ -1,7 +1,7 @@
 # BST-visualizer
 
 ```js
-class Dnode {
+class Node {
   constructor(val) {
     this.val = val
     this.left = null
@@ -9,30 +9,28 @@ class Dnode {
   }
 }
 
-const root = new Dnode(32)
-const l1left = new Dnode(19)
-const l1right = new Dnode(14)
-const l2right = new Dnode(9)
-const l2_1 = new Dnode(8)
-const l2_2 = new Dnode(5)
-const l2_3 = new Dnode(33)
-const l3_1 = new Dnode(1)
-const l4_1 = new Dnode(99)
-root.left = l1left
-root.right = l1right
-l1right.right = l2right
-l1right.left = l2_3
-l1left.left = l2_1
-l1left.right = l2_2
-l2_1.left = l3_1
-l3_1.left = l4_1
+const root = new Node(32)
+const n1 = new Node(19)
+const n2 = new Node(14)
+const n3 = new Node(9)
+const n4 = new Node(8)
+const n5 = new Node(5)
+const n6 = new Node(33)
+const n7 = new Node(1)
+const n8 = new Node(99)
+root.left = n1
+root.right = n2
+n2.right = n3
+n2.left = n6
+n1.left = n4
+n1.right = n5
+n4.left = n7
+n7.left = n8
 
-const cvs = document.getElementById("cvs")
+const cvs = document.getElementById('cvs')
 const tree = new BinaryTree({ canvas: cvs, root })
 
 tree.plot()
 ```
 
-
-![example](https://github.com/everthis/BST-visualizer/blob/master/example.png "example")
-
+![example](https://github.com/everthis/BST-visualizer/blob/master/example.png 'example')
