@@ -9,15 +9,15 @@ class Node {
   }
 }
 
-const root = new Node(32)
-const n1 = new Node(19)
-const n2 = new Node(14)
-const n3 = new Node(9)
-const n4 = new Node(8)
-const n5 = new Node(5)
-const n6 = new Node(33)
-const n7 = new Node(1)
-const n8 = new Node(99)
+const root = new Node([32])
+const n1 = new Node([19])
+const n2 = new Node([14])
+const n3 = new Node([9])
+const n4 = new Node([8])
+const n5 = new Node([5])
+const n6 = new Node([33])
+const n7 = new Node([1])
+const n8 = new Node([99])
 root.left = n1
 root.right = n2
 n2.right = n3

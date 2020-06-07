@@ -2,15 +2,15 @@ class BinaryTree {
   constructor({ canvas, root }) {
     const dpr = window.devicePixelRatio
     const di = canvas.getBoundingClientRect()
-    canvas.setAttribute("width", dpr * di.width)
-    canvas.setAttribute("height", dpr * di.height)
+    canvas.setAttribute('width', dpr * di.width)
+    canvas.setAttribute('height', dpr * di.height)
     this.di = di
     this.dpr = dpr
     this.r = 20
     this.node = canvas
     this.data = root
     this.padding = [20, 20, 20, 20]
-    this.ctx = canvas.getContext("2d")
+    this.ctx = canvas.getContext('2d')
     this.ctx.scale(dpr, dpr)
     this.line = new Line()
     this.root = null
@@ -18,7 +18,7 @@ class BinaryTree {
     this.m = new Map()
   }
   calcHeight() {
-    const height = node => {
+    const height = (node) => {
       if (node === null) return 0
       return Math.max(height(node.left), height(node.right)) + 1
     }
@@ -55,9 +55,9 @@ class BinaryTree {
   recursiveAddNodeV2(node, parent, level) {
     if (node === null || parent === null) return
     if (parent.left === node) {
-      this.plotNode(node, parent, "left", level)
+      this.plotNode(node, parent, 'left', level)
     } else if (parent.right === node) {
-      this.plotNode(node, parent, "right", level)
+      this.plotNode(node, parent, 'right', level)
     } else {
       this.recursiveAddNodeV2(node, parent.left, level)
       this.recursiveAddNodeV2(node, parent.right, level)
@@ -69,7 +69,7 @@ class BinaryTree {
       (this.di.width - this.padding[1] - this.padding[3]) /
       (2 * 2 ** (this.h - level))
     let xy
-    if (direction === "right") {
+    if (direction === 'right') {
       xy = p.rightCoordinate(deltaX, this.h - level)
     } else {
       xy = p.leftCoordinate(deltaX, this.h - level)
@@ -99,20 +99,17 @@ class Node {
     this.y = y
     this.r = r
     this.ctx = ctx
-    ctx.fillStyle = "blue"
-    ctx.strokeStyle = "black"
+    ctx.strokeStyle = 'black'
     ctx.lineWidth = 2
-    ctx.font = "16px verdana"
+    this.valText = null
   }
   draw() {
-    const di = this.ctx.measureText(this.val)
-    const xb = di.width / 2
     const yb = 6
     this.ctx.beginPath()
     this.ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI)
     this.ctx.stroke()
     this.ctx.closePath()
-    this.ctx.fillText(this.val, this.x - xb, this.y + yb)
+    this.valText = new Text(this.val, this.x, this.y, 2 * this.r, this.ctx)
   }
   getX() {
     return this.x
@@ -123,10 +120,10 @@ class Node {
   getRadius() {
     return this.r
   }
-  leftCoordinate(m, n) {
+  leftCoordinate(m) {
     return { cx: this.x - m, cy: this.y + 3 * this.r }
   }
-  rightCoordinate(m, n) {
+  rightCoordinate(m) {
     return { cx: this.x + m, cy: this.y + 3 * this.r }
   }
 }
@@ -141,5 +138,24 @@ class Line {
     ctx.moveTo(moveToX, moveToY)
     ctx.lineTo(lineToX, lineToY)
     ctx.stroke()
+  }
+}
+
+class Text {
+  constructor(content, x, y, width, ctx) {
+    this.c = content
+    this.x = x
+    this.y = y
+    this.ctx = ctx
+    this.ctx.fillStyle = 'blue'
+    this.ctx.font = '14px verdana'
+    const h = ctx.measureText('M').width
+    for (let i = 0, len = content.length, odd = len % 2 === 1; i < len; i++) {
+      this.ctx.fillText(
+        this.c[i],
+        x - ctx.measureText(this.c[i]).width / 2,
+        y + i * h - (len / 2) * h + h
+      )
+    }
   }
 }
