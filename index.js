@@ -1,17 +1,16 @@
 class BinaryTree {
-  constructor({ canvas, root }) {
-    const dpr = window.devicePixelRatio
-    const di = canvas.getBoundingClientRect()
-    canvas.setAttribute('width', dpr * di.width)
-    canvas.setAttribute('height', dpr * di.height)
-    this.di = di
-    this.dpr = dpr
+  constructor({ canvas, root, scale, showLabel }) {
+    this.dpr = window.devicePixelRatio
+    this.di = canvas.getBoundingClientRect()
+    canvas.setAttribute('width', this.dpr * this.di.width)
+    canvas.setAttribute('height', this.dpr * this.di.height)
     this.r = 20
     this.node = canvas
     this.data = root
+    this.showLabel = showLabel === true
     this.padding = [20, 20, 20, 20]
     this.ctx = canvas.getContext('2d')
-    this.ctx.scale(dpr, dpr)
+    this.ctx.scale(this.dpr*(scale || 1), this.dpr*(scale || 1))
     this.line = new Line()
     this.root = null
     this.h = this.calcHeight()
@@ -74,13 +73,16 @@ class BinaryTree {
     } else {
       xy = p.leftCoordinate(deltaX, this.h - level)
     }
-    const newNode = this.addAndDisplayNode(xy.cx, xy.cy, 20, this.ctx, node.val)
+    const newNode = this.addAndDisplayNode(xy.cx, xy.cy, this.r, this.ctx, node.val)
     const [prevX, prevY] = [p.getX(), p.getY()]
     this.line.draw(prevX, prevY, xy.cx, xy.cy, p.getRadius(), this.ctx)
-    const [avgX, avgY] = [(prevX + xy.cx) / 2, (prevY + xy.cy) / 2]
-    const text = xy.cx - prevX > 0 ? 1 : 0
-    const halfW = this.ctx.measureText(text).width / 2
-    this.ctx.fillText(text, text === 1 ? avgX + halfW : avgX - halfW * 2, avgY)
+    if (this.showLabel) {
+      const [avgX, avgY] = [(prevX + xy.cx) / 2, (prevY + xy.cy) / 2]
+      const text = xy.cx - prevX > 0 ? 1 : 0
+      const halfW = this.ctx.measureText(text).width / 2
+      this.ctx.fillStyle = 'red'
+      this.ctx.fillText(text, text === 1 ? avgX + halfW : avgX - halfW * 2, avgY)
+    }
     this.m.set(node, newNode)
   }
   addAndDisplayNode(x, y, r, ctx, data) {
@@ -150,12 +152,8 @@ class Text {
     this.ctx.fillStyle = 'blue'
     this.ctx.font = '14px verdana'
     const h = ctx.measureText('M').width
-    for (let i = 0, len = content.length, odd = len % 2 === 1; i < len; i++) {
-      this.ctx.fillText(
-        this.c[i],
-        x - ctx.measureText(this.c[i]).width / 2,
-        y + i * h - (len / 2) * h + h
-      )
+    for(let i = 0, len = content.length, odd = len % 2 === 1; i < len; i++) {
+      this.ctx.fillText(this.c[i], x - ctx.measureText(this.c[i]).width / 2, y + i * h - (len / 2) * h + h)
     }
   }
 }
