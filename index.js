@@ -1,4 +1,4 @@
-class BinaryTree {
+export class BinaryTree {
   constructor({ canvas, root, scale, showLabel }) {
     this.dpr = window.devicePixelRatio
     this.di = canvas.getBoundingClientRect()
