@@ -49,4 +49,4 @@ const tree = new BinaryTree({ canvas: cvs, root })
 tree.plot()
 ```
 
-![example](https://github.com/everthis/BST-visualizer/blob/master/example.png 'example')
+![Imgur](https://i.imgur.com/eS536ZH.png 'example')
